@@ -44,6 +44,10 @@ bot.on('message', () => {
   console.log('✅ Bot is connected and receiving messages');
 });
 
+// Log bot startup
+console.log('🤖 SabteDV Telegram Bot starting...');
+console.log('📱 Bot is ready and waiting for messages!');
+
 // Inline keyboard reused for editing
 const inlineKeyboard = [
   [{ text: "✅ ثبت نام در سایت", url: REGISTRATION_URL }],
@@ -73,6 +77,7 @@ async function sendImageEfficiently(chatId, imageType, caption, replyMarkup) {
   try {
     // Try to use stored file_id first
     if (imageFileIds[imageType]) {
+      console.log(`⚡ Using cached file_id for ${imageType}: ${imageFileIds[imageType]}`);
       return await bot.sendPhoto(chatId, imageFileIds[imageType], {
         caption: caption,
         parse_mode: 'HTML',
@@ -91,6 +96,7 @@ async function sendImageEfficiently(chatId, imageType, caption, replyMarkup) {
     // Store file_id for future use
     if (sentMessage.photo && sentMessage.photo.length > 0) {
       imageFileIds[imageType] = sentMessage.photo[sentMessage.photo.length - 1].file_id;
+      console.log(`📸 Image file_id stored for ${imageType}: ${imageFileIds[imageType]}`);
     }
     
     return sentMessage;
@@ -102,6 +108,9 @@ async function sendImageEfficiently(chatId, imageType, caption, replyMarkup) {
 
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
+
+  // Log the start command
+  console.log(`🚀 Bot started by user ${msg.from.username || msg.from.first_name} (ID: ${msg.from.id})`);
 
   const title = "🌍 <b>به <code>sabtedv.com</code> سایت تخصصی ثبت‌نام لاتاری آمریکا خوش آمدید</b>";
   const description = `اینجا می‌تونید با <b>ساده‌ترین و مطمئن‌ترین روش</b>، شانس خودتون برای دریافت گرین‌کارت آمریکا رو امتحان کنید. ما همه مراحل رو برای شما ساده کردیم تا بدون نگرانی و با اطمینان کامل ثبت‌نام کنید.
@@ -123,6 +132,9 @@ bot.on('callback_query', async (query) => {
   const chatId = query.message.chat.id;
   const messageId = query.message.message_id;
   const data = query.data;
+
+  // Log the button press
+  console.log(`🔘 Button pressed: "${data}" by user ${query.from.username || query.from.first_name} (ID: ${query.from.id})`);
 
   let newText = '';
 

@@ -1,0 +1,5 @@
+{
+  "platform": "docker",
+  "app": "dv-telegram-bot",
+  "port": 3000
+}
